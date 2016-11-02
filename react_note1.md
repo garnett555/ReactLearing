@@ -1,1 +1,3 @@
--传递一些*方法*到`React.createClass()`创建一个新的React组件
+- React组件类必须以大写开头
+- 传递一些*方法*到`React.createClass()`创建一个新的React组件，这些方法中最重要的是`render`方法，该方法返回一棵React组件树，这棵树最终将会渲染成HTML。
+- `ReactDOM.render()`*实例化根组件*，启动框架，注入标记到原始的DOM元素中。

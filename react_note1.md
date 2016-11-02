@@ -1,3 +1,6 @@
 - React组件类必须以大写开头
 - 传递一些*方法*到`React.createClass()`创建一个新的React组件，这些方法中最重要的是`render`方法，该方法返回一棵React组件树，这棵树最终将会渲染成HTML。
-- `ReactDOM.render()`*实例化根组件*，启动框架，注入标记到原始的DOM元素中。
+- `ReactDOM.render()`*实例化根组件*，启动框架，注入标记到原始的DOM元素中。`ReactDOM.render()`应该只在复合组件被定义之后被调用。
+- HTML组件是正常的React组件，就和你定义的一样，只有一个*区别*，那就是JSX编译器会自动重写HTML标签为`React.createElement(tagName)`表达式，其他什么都不做，这样是为了避免污染全局命名空间。
+- 从父级组件传来的数据在子组件中作为“属性”可供使用，这些属性可以通过`this.props`访问。
+- 在JSX中，通过将JavaScript表达式放在大括号中(作为属性或者子节点)，你可以把文本或者React组件放置在*组件树*中。我们以`this.props`的键名访问传递给组件的命名属性，以`this.props.children`访问任何嵌套的元素。

@@ -1,0 +1,1 @@
+在javascript对象中传递一些方法到React.createClass()创建一个新的React组件

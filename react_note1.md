@@ -5,6 +5,6 @@
 - HTML组件是正常的React组件，就和你定义的一样，只有一个*区别*，那就是JSX编译器会自动重写HTML标签为`React.createElement(tagName)`表达式，其他什么都不做，这样是为了避免污染全局命名空间。
 - 从父级组件传来的数据在子组件中作为“属性”可供使用，这些属性可以通过`this.props`访问。
 - 在JSX中，通过将JavaScript表达式放在大括号中(作为属性或者子节点)，你可以把文本或者React组件放置在*组件树*中。我们以`this.props`的键名访问传递给组件的命名属性，以`this.props.children`访问任何嵌套的元素。
-- `props`是不可变的，它们从父级传来并*被父级拥有*。为了实现交互，我们给组件引进了可变的`state`，`this.state`是组件私有的，可以通过调用`this.setState()`改变它，每当`state`更新，组件就重新渲染自己。
+- `props`是不可变的，它们从父级传来并*被父级拥有*。为了实现交互，我们给组件引进了可变的`state`，`this.state`是*组件私有的*，可以通过调用`this.setState()`改变它，每当`state`更新，组件就重新渲染自己。
 - `getInitialState()`在生命周期里只执行一次，并设置组件的初始状态。
 - `componentDidMount`是一个当组件被渲染时被React自动调用的方法。

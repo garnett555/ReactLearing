@@ -8,3 +8,7 @@
 - `props`是不可变的，它们从父级传来并*被父级拥有*。为了实现交互，我们给组件引进了可变的`state`，`this.state`是*组件私有的*，可以通过调用`this.setState()`改变它，每当`state`更新，组件就重新渲染自己。
 - `getInitialState()`在生命周期里只执行一次，并设置组件的初始状态。
 - `componentDidMount`是一个当组件被渲染时被React自动调用的方法。
+
+# @hulufei
+- getInitialState()方法，用于初始化this.state的值，*只在组件装载之前调用一次*。
+- getDefaultProps()方法，只在*组件 **创建** 时调用一次*，并缓存返回的对象（即在`React.createClass`之后就会调用）。在组件装载之后，这个方法缓存的结果会用来保证访问`this.props`的属性时，当这个属性没有在父组件中传入（在这个组件的JSX属性中设置），也总是有值的。如果是ES6语法，可以直接定义`defaultProps`这个类属性来替代。

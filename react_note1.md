@@ -19,9 +19,13 @@
 ## Flux
 - React 标榜自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分。
 - 一个Flux应用主要包含四个部分：
-1.the dispatcher: 处理动作分发，维护store之间的依赖关系
-2.the stores: 数据和逻辑部分
-3.the views: React组件，这一层可以看做controller-views，作为视图同时响应用户交互
-4.the actions: 提供给dispatcher  传递数据给store
+1.`the dispatcher`: 处理动作分发，维护store之间的依赖关系
+2.`the stores`: 数据和逻辑部分
+3.`the views`: React组件，这一层可以看做controller-views，作为视图同时响应用户交互
+4.`the actions`: 提供给dispatcher  传递数据给store
 - Flux核心的“单向数据流”如何运作：
 ``` Actions -> Dispatcher -> Store -> View ```
+整个流程如下：
+1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher 2.View 层通过用户交互（比如 onClick）会触发 Action 3.Dispatcher 会分发触发的 Action 给所有注册的 Store 的回调函数 4.Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了 5.View 会监听这个 change 事件，拿到对应的新数据并调用 setState 更新组件 UI
+所有的状态都由 Store 来维护，通过 Action 传递数据，构成了如上所述的单向数据流循环，所以应用中的各部分分工就相当明确，高度解耦了。
+### Dispatcher

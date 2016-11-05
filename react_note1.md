@@ -19,9 +19,9 @@
 ## Flux
 - React 标榜自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分。
 - 一个Flux应用主要包含四个部分：
-1. the dispatcher: 处理动作分发，维护store之间的依赖关系
-2. the stores: 数据和逻辑部分
-3. the views: React组件，这一层可以看做controller-views，作为视图同时响应用户交互
-4. the actions: 提供给dispatcher  传递数据给store
+1.the dispatcher: 处理动作分发，维护store之间的依赖关系
+2.the stores: 数据和逻辑部分
+3.the views: React组件，这一层可以看做controller-views，作为视图同时响应用户交互
+4.the actions: 提供给dispatcher  传递数据给store
 - Flux核心的“单向数据流”如何运作：
-> Actions -> Dispatcher -> Store -> View
+``` Actions -> Dispatcher -> Store -> View ```

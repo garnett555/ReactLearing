@@ -16,3 +16,12 @@
 - **NOTE**:不要在`render`或`render`之前访问`refs`。
 - 如果组件中包含通过循环插入的子元素，为了保证重新渲染UI的时候能够正确显示这些子元素，每个元素都需要通过一个特殊的`key`属性指定一个唯一值，为了内部diff的效率。
 - 父子组件间通信，就是通过`props`属性传递，在父组件给子组件设置`props`，然后子组件就可以通过`props`访问到父组件的数据/方法，这就搭建起了父子组件间通信的桥梁。
+## Flux
+- React 标榜自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分。
+- 一个Flux应用主要包含四个部分：
+1. the dispatcher: 处理动作分发，维护store之间的依赖关系
+2. the stores: 数据和逻辑部分
+3. the views: React组件，这一层可以看做controller-views，作为视图同时响应用户交互
+4. the actions: 提供给dispatcher  传递数据给store
+- Flux核心的“单向数据流”如何运作：
+> Actions -> Dispatcher -> Store -> View

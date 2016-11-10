@@ -68,3 +68,23 @@ import { createStore } from 'redux';
 const store = createStore(reducer);
 ```
 上面代码中，createStore接受 Reducer 作为参数，生成一个新的 Store。以后每当store.dispatch发送过来一个新的 Action，就会自动调用 Reducer，得到新的 State。
+- Reducer 函数最重要的特征是，它是一个纯函数。也就是说，只要是同样的输入，必定得到同样的输出。由于 Reducer 是纯函数，就可以保证同样的State，必定得到同样的 View。但也正因为这一点，Reducer 函数里面不能改变 State，必须返回一个全新的对象。纯函数是函数式编程的概念，必须遵守以下一些约束。
+*
+不得改写参数
+不能调用系统 I/O 的API
+不能调用Date.now()或者Math.random()等不纯的方法，因为每次会得到不一样的结果
+*
+- Store 允许使用`store.subscribe`方法设置监听函数，一旦 State 发生变化，就自动执行这个函数。
+```
+import { createStore } from 'redux';
+const store = createStore(reducer);
+
+store.subscribe(listener);
+```  
+显然，只要把 View 的更新函数（对于 React 项目，就是组件的`render`方法或`setState`方法）放入listen，就会实现 View 的自动渲染。`store.subscribe`方法返回一个函数，调用这个函数就可以解除监听。
+- `createStore`方法还可以接受第二个参数，表示 State 的最初状态。这通常是服务器给出的，
+```
+let store = createStore(todoApp, window.STATE_FROM_SERVER)
+```
+上面代码中，`window.STATE_FROM_SERVER`就是整个应用的状态初始值。注意，如果提供了这个参数，它会覆盖 Reducer 函数的默认初始值。
+- Redux 提供了一个`combineReducers`方法，用于 Reducer 的拆分。你只要定义各个子 Reducer 函数，然后用这个方法，将它们合成一个大的 Reducer。

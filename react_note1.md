@@ -28,4 +28,10 @@
 整个流程如下：
 1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher 2.View 层通过用户交互（比如 onClick）会触发 Action 3.Dispatcher 会分发触发的 Action 给所有注册的 Store 的回调函数 4.Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了 5.View 会监听这个 change 事件，拿到对应的新数据并调用 setState 更新组件 UI
 所有的状态都由 Store 来维护，通过 Action 传递数据，构成了如上所述的单向数据流循环，所以应用中的各部分分工就相当明确，高度解耦了。
-### Dispatcher
+## Redux
+### Redux三大基本原则
+- 1. 整个应用只有唯一一个可信数据源，也就是只有一个 Store 2. State 只能通过触发 Action 来更改 3. State 的更改必须写成纯函数，也就是每次更改总是返回一个新的 State，在 Redux 里这种函数称为 Reducer
+### Actions
+Action 很简单，就是一个单纯的包含 `{ type, payload }` 的对象，`type` 是一个常量用来标示动作类型，`payload` 是这个动作携带的数据。Action 需要通过 `store.dispatch()` 方法来发送。一般来说，会使用函数（Action Creators）来生成 action，这样会有更大的灵活性，Action Creators 是一个 pure function，它最后会返回一个 action 对象。
+### Reducers
+Reducer 用来处理 Action 触发的对状态树的更改。所以一个 reducer 函数会接受 `oldState` 和 `action` 两个参数，返回一个新的 state：```(oldState, action) => newState```

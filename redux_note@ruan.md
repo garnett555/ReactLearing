@@ -86,7 +86,7 @@ store.subscribe(listener);
 ```
 let store = createStore(todoApp, window.STATE_FROM_SERVER)
 ```
-上面代码中，`window.STATE_FROM_SERVER`就是整个应用的状态初始值。注意，如果提供了这个参数，它会覆盖 Reducer 函数的默认初始值。
+上面代码中，`window.STATE_FROM_SERVER`就是整个应用的状态初始值。注意，**如果提供了这个参数，它会覆盖 Reducer 函数的默认初始值。**
 - Redux 提供了一个`combineReducers`方法，用于 Reducer 的拆分。你只要定义各个子 Reducer 函数，然后用这个方法，将它们合成一个大的 Reducer。
 ```
 import { combineReducers } from 'redux';
@@ -100,3 +100,58 @@ const chatReducer = combineReducers({
 export default todoApp;
 ```
 *这种写法有一个前提，就是 State 的属性名必须与子 Reducer 同名。*
+
+- Action 发出以后，Reducer 立即算出 State，这叫做同步；Action 发出以后，过一段时间再执行 Reducer，这就是异步。怎么才能 Reducer 在异步操作结束后自动执行呢？这就要用到新的工具：中间件（middleware）。常用的中间件都有现成的，只要引用别人写好的模块即可。
+```
+import { applyMiddleware, createStore } from 'redux';
+import createLogger from 'redux-logger';
+const logger = createLogger();
+
+const store = createStore(
+  reducer,
+  applyMiddleware(logger)
+);
+```
+上面代码中，`redux-logger`提供一个生成器`createLogger`，可以生成日志中间件`logger`。然后，将它放在`applyMiddleware`方法之中，传入`createStore`方法，就完成了`store.dispatch()`的功能增强。
+这里有两点需要注意：
+（1）`createStore`方法可以接受整个应用的初始状态作为参数，那样的话，`applyMiddleware`就是第三个参数了。
+```
+const store = createStore(
+  reducer,
+  initial_state,
+  applyMiddleware(logger)
+);
+```
+（2）中间件的次序有讲究。
+```
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk, promise, logger)
+);
+```
+上面代码中，`applyMiddleware`方法的三个参数，就是三个中间件。有的中间件有次序要求，使用前要查一下文档。*比如，logger就一定要放在最后，否则输出结果会不正确。* `applyMiddlewares`是 Redux 的原生方法，作用是将所有中间件组成一个数组，依次执行。
+- 同步操作只要发出一种 Action 即可，异步操作的差别是它要发出三种 Action。(1)操作发起时的 Action (2)操作成功时的 Action (3)操作失败时的 Action
+以向服务器取出数据为例，三种 Action 可以有两种不同的写法。
+```
+// 写法一：名称相同，参数不同
+{ type: 'FETCH_POSTS' }
+{ type: 'FETCH_POSTS', status: 'error', error: 'Oops' }
+{ type: 'FETCH_POSTS', status: 'success', response: { ... } }
+
+// 写法二：名称不同
+{ type: 'FETCH_POSTS_REQUEST' }
+{ type: 'FETCH_POSTS_FAILURE', error: 'Oops' }
+{ type: 'FETCH_POSTS_SUCCESS', response: { ... } }
+```
+除了 Action 种类不同，异步操作的 State 也要进行改造，反映不同的操作状态。下面是 State 的一个例子。
+```
+let state = {
+  // ... 
+  isFetching: true,
+  didInvalidate: true,
+  lastUpdated: 'xxxxxxx'
+};
+```
+- 异步操作的思路
+操作开始时，送出一个 Action，触发 State 更新为"正在操作"状态，View 重新渲染
+操作结束后，再送出一个 Action，触发 State 更新为"操作结束"状态，View 再一次重新渲染
